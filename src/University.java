@@ -1,5 +1,4 @@
 import com.db4o.*;
-import java.util.*;
 
 public class University {
 
@@ -38,6 +37,18 @@ public class University {
 		db.delete(student1);
 		
 		showAll(db);
+
+		System.out.println("\nВыбрать студента с номером зачетки \"362014\":\n");
+		ObjectSet<Student> list = db.queryByExample(new Student("362014", null, null, null));
+		if (list.hasNext())
+		{
+			Student t = list.next();
+			System.out.println("ФИО: " + t.getFio());
+			System.out.println("Номер зачетной книжки: " + t.getNumber());
+			System.out.println("Номер группы: " + t.getGroup());
+			System.out.println("Факультет: " + t.getDepartment());
+		}
+	
 	}
 
 	public static void main(String[] args) {
