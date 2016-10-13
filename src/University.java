@@ -63,7 +63,8 @@ public class University {
 		Query query = db.query();
 		query.constrain(Student.class);
 		query.descend("number").constrain("110073").not();
-		query.descend("fio").constrain("Пупкин Василий Петрович").not();
+		Constraint constraint = query.descend("fio").constrain("Петров Петр Петрович");
+		query.descend("fio").constrain("Пупкин Василий Петрович").or(constraint);
 		students = query.execute();
 		
 		showAll(students);
