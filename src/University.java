@@ -10,8 +10,7 @@ public class University {
 		s += String.format("%8s", "Группа") + " ¦ ";
 		s += String.format("%35s", "Факультет");
 		System.out.println(s);
-		System.out
-				.println("-------------------------------+----------+----------+------------------------------------");
+		System.out.println("-------------------------------+----------+----------+------------------------------------");
 
 		for (int i = 0; i < students.size(); i++) {
 			System.out.println(students.get(i).toTableRow());
