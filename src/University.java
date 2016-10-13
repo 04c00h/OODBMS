@@ -2,11 +2,8 @@ import com.db4o.*;
 
 public class University {
 
-	static void showAll(ObjectContainer db)
+	static void showAll(ObjectSet<Student> students)
 	{
-		Student prototype = new Student(null, null, null, null);
-		ObjectSet<Student> list = db.queryByExample(prototype);
-
 		String s = String.format("%30s", "ФИО") + " ¦ ";
 		s += String.format("%8s", "№ зач.") + " ¦ ";
 		s += String.format("%8s", "Группа") + " ¦ ";
@@ -14,12 +11,18 @@ public class University {
 		System.out.println(s);
 		System.out.println("-------------------------------+----------+----------+------------------------------------");
 		
-		while (list.hasNext())
-		{
-			System.out.println(((Student) list.next()).toTableRow());
+		for(int i = 0; i < students.size(); i++) {
+			System.out.println(students.get(i).toTableRow());
 		}
 		
-		System.out.println("Кол-во записей: " + list.size());
+		System.out.println("Кол-во записей: " + students.size());
+	}
+
+	static void showAll(ObjectContainer db)
+	{
+		Student prototype = new Student(null, null, null, null);
+		ObjectSet<Student> list = db.queryByExample(prototype);
+		showAll(list);
 	}
 	
 	static void action(ObjectContainer db)
@@ -48,6 +51,22 @@ public class University {
 			System.out.println("Номер группы: " + t.getGroup());
 			System.out.println("Факультет: " + t.getDepartment());
 		}
+		
+		System.out.println("\nNative Queries:\n");
+		ObjectSet<Student> students = db.query(new Predicate<Student>() {
+			public boolean match(Student student) {
+				return student.getGroup().equals("Г-101") || student.getGroup().equals("Г-102");
+			}
+		});
+		showAll(students);
+		
+		System.out.println("\nSODA Query API:\n");
+		Query query = db.query();
+		query.constrain(Student.class);
+		query.descend("number").constrain("110073").not();
+		query.descend("fio").constrain("Пупкин Василий Петрович").not();
+		students = query.execute();
+		showAll(students);
 	
 	}
 
