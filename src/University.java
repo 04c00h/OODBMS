@@ -1,4 +1,5 @@
 import com.db4o.*;
+import com.db4o.query.Constraint;
 import com.db4o.query.Predicate;
 import com.db4o.query.Query;
 
@@ -10,7 +11,8 @@ public class University {
 		s += String.format("%8s", "Группа") + " ¦ ";
 		s += String.format("%35s", "Факультет");
 		System.out.println(s);
-		System.out.println("-------------------------------+----------+----------+------------------------------------");
+		System.out
+				.println("-------------------------------+----------+----------+------------------------------------");
 
 		for (int i = 0; i < students.size(); i++) {
 			System.out.println(students.get(i).toTableRow());
@@ -70,6 +72,11 @@ public class University {
 		showAll(students);
 
 	}
+	
+	private static void action2(ObjectContainer db) {
+		KursWork kursWork1 = new KursWork("Искусственные нейронные сети");
+		Student student1 = new Student("901237", "Иванов Иван Иванович", "0102121", "Физико-Математический факультет");
+	}
 
 	public static void main(String[] args) {
 
@@ -79,6 +86,7 @@ public class University {
 
 		try {
 			action(db);
+			action2(db);
 		} finally {
 			db.close();
 		}
@@ -86,4 +94,3 @@ public class University {
 	}
 
 }
-
